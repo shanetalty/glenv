@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Video Switcher</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="color-scheme" content="dark light">
   <style>
     body, html {
       margin: 0;
@@ -34,6 +34,7 @@
       top: 0;
       left: 0;
       z-index: 1;
+      transition: opacity 0.5s ease; /* Add transition for opacity */
     }
   </style>
 </head>
@@ -56,7 +57,7 @@
 
         if (clientX > screenWidth / 2 && clientY < screenHeight / 2) {
           // Top right quadrant
-          switchVideo();
+          switchVideoWithFade();
         } else if (clientX < screenWidth / 2 && clientY < screenHeight / 2) {
           // Top left quadrant
           restartVideo();
@@ -64,22 +65,14 @@
       });
     });
 
-    function switchVideo() {
+    function switchVideoWithFade() {
       if (currentVideo === 1) {
-        video1.style.zIndex = 0;
-        video2.style.zIndex = 1;
-        video1.pause();
-        video1.currentTime = 0;
-        video2.currentTime = 0; // Reset video 2
-        video2.play();
+        fadeOut(video1);
+        fadeIn(video2);
         currentVideo = 2;
       } else {
-        video1.style.zIndex = 1;
-        video2.style.zIndex = 0;
-        video2.pause();
-        video2.currentTime = 0;
-        video1.currentTime = 0; // Reset video 1
-        video1.play();
+        fadeOut(video2);
+        fadeIn(video1);
         currentVideo = 1;
       }
     }
@@ -98,6 +91,18 @@
 
     function video2Ended() {
       video2.pause();
+    }
+
+    function fadeOut(element) {
+      element.style.opacity = 0;
+      setTimeout(() => {
+        element.pause();
+      }, 500); // Pause the video after the fade out transition (0.5s)
+    }
+
+    function fadeIn(element) {
+      element.play();
+      element.style.opacity = 1;
     }
   </script>
 </body>
