@@ -69,10 +69,14 @@
       if (currentVideo === 1) {
         fadeOut(video1);
         fadeIn(video2);
+        video1.currentTime = 0;
+        video2.currentTime = 0;
         currentVideo = 2;
       } else {
         fadeOut(video2);
         fadeIn(video1);
+        video1.currentTime = 0;
+        video2.currentTime = 0;
         currentVideo = 1;
       }
     }
